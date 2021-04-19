@@ -29,6 +29,9 @@ object Parsers {
   def upper: Parser[Char] =
     sat(character => character >= 'A' && character <= 'Z')
 
+  def letter: Parser[Char] =
+    lower ++ upper
+
   implicit class ParserOperators[A](parser: Parser[A]) {
     def >>=[B](f: A => Parser[B]): Parser[B] =
       input =>
