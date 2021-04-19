@@ -20,7 +20,7 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
     item("") should be(List())
   }
 
-  ">>=" should "pass results to second parser and first parser succeeds" in {
+  ">>=" should "pass results to second parser if the first parser succeeds" in {
     val parser = item >>= (a => result(a.toUpper))
 
     parser("hello") should be(List(('H', "ello")))
