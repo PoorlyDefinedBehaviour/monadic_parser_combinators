@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 object Parsers {
   type Parser[A] = String => List[(A, String)]
 
@@ -33,6 +34,13 @@ object Parsers {
     lower ++ upper
 
   def alphanum: Parser[Char] = letter ++ digit
+
+  def word: Parser[String] = {
+    val buildWordFromLetters =
+      letter >>= (character => word >>= (string => result(character + string)))
+
+    buildWordFromLetters ++ result("")
+  }
 
   implicit class ParserOperators[A](parser: Parser[A]) {
     def >>=[B](f: A => Parser[B]): Parser[B] =

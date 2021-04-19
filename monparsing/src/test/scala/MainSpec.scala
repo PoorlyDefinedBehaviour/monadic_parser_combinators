@@ -85,4 +85,13 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
     alphanum("1abc") should be(List(('1', "abc")))
     alphanum("abc1") should be(List(('a', "bc1")))
   }
+
+  "word" should "succeed when input contains a non-empty word" in {
+    word("") should be(List(("", "")))
+    word("42") should be(List(("", "42")))
+    word("1abc") should be(List(("", "1abc")))
+    word("Yes!") should be(
+      List(("Yes", "!"), ("Ye", "s!"), ("Y", "es!"), ("", "Yes!"))
+    )
+  }
 }
