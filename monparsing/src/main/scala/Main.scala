@@ -12,12 +12,15 @@ object Parsers {
       List((input.head, input.tail))
     }
 
-  def bind[A, B](parser: Parser[A])(f: A => Parser[B]): Parser[B] =
-    input =>
-      parser(input).flatMap((parserAResult) => {
-        val (parsed, restOfInput) = parserAResult
-        f(parsed)(restOfInput)
-      })
+  implicit class ParserOperators[A](parser: Parser[A]) {
+    def >>=[B](f: A => Parser[B]): Parser[B] =
+      input =>
+        parser(input).flatMap((parserAResult) => {
+          val (parsed, restOfInput) = parserAResult
+          f(parsed)(restOfInput)
+        })
+  }
+
 }
 
 object Main extends App {
