@@ -49,4 +49,16 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
     digit("1") should be(List(('1', "")))
     digit("12345") should be(List(('1', "2345")))
   }
+
+  "lower" should "succeed when the first character from the input string is in lower case" in {
+    lower("") should be(List())
+    lower("A") should be(List())
+    lower("b") should be(List(('b', "")))
+  }
+
+  "upper" should "succeed when the first character from the input string is in upper case" in {
+    upper("") should be(List())
+    upper("b") should be(List())
+    upper("A") should be(List(('A', "")))
+  }
 }

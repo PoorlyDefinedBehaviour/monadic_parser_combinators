@@ -23,6 +23,11 @@ object Parsers {
   def digit: Parser[Char] =
     sat(character => character >= '0' && character <= '9')
 
+  def lower: Parser[Char] =
+    sat(character => character >= 'a' && character <= 'z')
+
+  def upper: Parser[Char] =
+    sat(character => character >= 'A' && character <= 'Z')
   implicit class ParserOperators[A](parser: Parser[A]) {
     def >>=[B](f: A => Parser[B]): Parser[B] =
       input =>
