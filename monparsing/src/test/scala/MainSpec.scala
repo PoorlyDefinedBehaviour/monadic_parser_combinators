@@ -61,4 +61,12 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
     upper("b") should be(List())
     upper("A") should be(List(('A', "")))
   }
+
+  "++" should "return the result of both parsers" in {
+    (upper ++ lower)("Abc") should be(List(('A', "bc")))
+    (lower ++ upper)("Abc") should be(List(('A', "bc")))
+    (digit ++ digit)("123") should be(List(('1', "23"), ('1', "23")))
+    (digit ++ digit)("") should be(List())
+    (digit ++ digit)("abc") should be(List())
+  }
 }

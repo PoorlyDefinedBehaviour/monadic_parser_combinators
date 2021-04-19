@@ -35,6 +35,9 @@ object Parsers {
           val (parsed, restOfInput) = parserAResult
           f(parsed)(restOfInput)
         })
+
+    def ++(parserTwo: Parser[A]): Parser[A] =
+      input => List.concat(parser(input), parserTwo(input))
   }
 
 }
