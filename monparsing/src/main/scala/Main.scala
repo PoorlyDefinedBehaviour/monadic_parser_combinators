@@ -41,6 +41,13 @@ object Parsers {
 
   def result[A](a: A): Parser[A] = input => List((a, input))
 
+  def string(str: String): Parser[String] =
+    if (str.isEmpty()) {
+      result("")
+    } else {
+      char(str.head) >>= (_ => string(str.tail)) >>= (_ => result(str))
+    }
+
   implicit class ParserMonadOps[A](parser: Parser[A]) {
     def >>=[B](f: A => Parser[B]): Parser[B] =
       input =>
@@ -50,7 +57,7 @@ object Parsers {
         })
   }
 
-  implicit class ParserOps[A](parser: Parser[A]) {
+  implicit class ParserMonoidOps[A](parser: Parser[A]) {
     def ++(parserTwo: Parser[A]): Parser[A] =
       input => List.concat(parser(input), parserTwo(input))
   }

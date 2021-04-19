@@ -94,4 +94,11 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
       List(("Yes", "!"), ("Ye", "s!"), ("Y", "es!"), ("", "Yes!"))
     )
   }
+
+  "string" should "succeed when expected string is a prefix of the input string" in {
+    string("hello")("") should be(List())
+    string("hello")("helicopter") should be(List())
+    string("hello")("ahello") should be(List())
+    string("hello")("hello there") should be(List(("hello", " there")))
+  }
 }
