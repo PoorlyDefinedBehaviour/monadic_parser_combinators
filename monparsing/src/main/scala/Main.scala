@@ -32,6 +32,8 @@ object Parsers {
   def letter: Parser[Char] =
     lower ++ upper
 
+  def alphanum: Parser[Char] = letter ++ digit
+
   implicit class ParserOperators[A](parser: Parser[A]) {
     def >>=[B](f: A => Parser[B]): Parser[B] =
       input =>
