@@ -41,4 +41,12 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
     char('a')("bc") should be(List())
     char('a')("abc") should be(List(('a', "bc")))
   }
+
+  "digit" should "succeed when the first character from the input string is a digit" in {
+    digit("") should be(List())
+    digit("a1") should be(List())
+    digit("1a") should be(List(('1', "a")))
+    digit("1") should be(List(('1', "")))
+    digit("12345") should be(List(('1', "2345")))
+  }
 }
