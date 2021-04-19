@@ -17,6 +17,9 @@ object Parsers {
       if (predicate(character)) result(character) else zero
     )
 
+  def char(character: Char): Parser[Char] =
+    sat(_ == character)
+
   implicit class ParserOperators[A](parser: Parser[A]) {
     def >>=[B](f: A => Parser[B]): Parser[B] =
       input =>

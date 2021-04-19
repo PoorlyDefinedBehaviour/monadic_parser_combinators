@@ -35,4 +35,10 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
     sat((_) => true)("") should be(List())
     sat(_ == 'a')("abc") should be(List(('a', "bc")))
   }
+
+  "char" should "succeed when the first character from the input string is the expected character" in {
+    char('a')("") should be(List())
+    char('a')("bc") should be(List())
+    char('a')("abc") should be(List(('a', "bc")))
+  }
 }
