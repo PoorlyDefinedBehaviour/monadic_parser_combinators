@@ -25,5 +25,14 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
 
     parser("hello") should be(List(('H', "ello")))
     parser("") should be(List())
+
+    (zero >>= result)("hello") should be(List())
+  }
+
+  "sat" should "succeed when the first character from the input string passes the predicate" in {
+    sat(_ == 'b')("abc") should be(List())
+    sat(_ == 'a')("") should be(List())
+    sat((_) => true)("") should be(List())
+    sat(_ == 'a')("abc") should be(List(('a', "bc")))
   }
 }
