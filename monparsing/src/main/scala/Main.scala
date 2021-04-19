@@ -1,8 +1,5 @@
-import scala.annotation.tailrec
 object Parsers {
   type Parser[A] = String => List[(A, String)]
-
-  def result[A](a: A): Parser[A] = input => List((a, input))
 
   def zero[A]: Parser[A] = input => List()
 
@@ -42,14 +39,18 @@ object Parsers {
     buildWordFromLetters ++ result("")
   }
 
-  implicit class ParserOperators[A](parser: Parser[A]) {
+  def result[A](a: A): Parser[A] = input => List((a, input))
+
+  implicit class ParserMonadOps[A](parser: Parser[A]) {
     def >>=[B](f: A => Parser[B]): Parser[B] =
       input =>
         parser(input).flatMap((parserAResult) => {
           val (parsed, restOfInput) = parserAResult
           f(parsed)(restOfInput)
         })
+  }
 
+  implicit class ParserOps[A](parser: Parser[A]) {
     def ++(parserTwo: Parser[A]): Parser[A] =
       input => List.concat(parser(input), parserTwo(input))
   }
