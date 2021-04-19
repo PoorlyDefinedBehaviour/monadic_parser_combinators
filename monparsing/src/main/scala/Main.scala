@@ -28,6 +28,7 @@ object Parsers {
 
   def upper: Parser[Char] =
     sat(character => character >= 'A' && character <= 'Z')
+
   implicit class ParserOperators[A](parser: Parser[A]) {
     def >>=[B](f: A => Parser[B]): Parser[B] =
       input =>
@@ -39,7 +40,6 @@ object Parsers {
     def ++(parserTwo: Parser[A]): Parser[A] =
       input => List.concat(parser(input), parserTwo(input))
   }
-
 }
 
 object Main extends App {

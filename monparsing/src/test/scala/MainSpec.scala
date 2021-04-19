@@ -1,4 +1,3 @@
-import collection.mutable.Stack
 import org.scalatest._
 import flatspec._
 import matchers._
@@ -62,7 +61,7 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
     upper("A") should be(List(('A', "")))
   }
 
-  "++" should "return the result of both parsers" in {
+  "++" should "return the results of both parsers" in {
     (upper ++ lower)("Abc") should be(List(('A', "bc")))
     (lower ++ upper)("Abc") should be(List(('A', "bc")))
     (digit ++ digit)("123") should be(List(('1', "23"), ('1', "23")))
