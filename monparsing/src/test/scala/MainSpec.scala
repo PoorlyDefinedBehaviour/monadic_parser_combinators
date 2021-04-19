@@ -101,4 +101,24 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
     string("hello")("ahello") should be(List())
     string("hello")("hello there") should be(List(("hello", " there")))
   }
+
+  "many" should "make any parser consume as many characters as possible" in {
+    many(char('a'))("") should be(List((List(), "")))
+    many(char('a'))("aaabc") should be(
+      List(
+        (List('a', 'a', 'a'), "bc"),
+        (List('a', 'a'), "abc"),
+        (List('a'), "aabc"),
+        (List(), "aaabc")
+      )
+    )
+    many(digit)("123") should be(
+      List(
+        (List('1', '2', '3'), ""),
+        (List('1', '2'), "3"),
+        (List('1'), "23"),
+        (List(), "123")
+      )
+    )
+  }
 }

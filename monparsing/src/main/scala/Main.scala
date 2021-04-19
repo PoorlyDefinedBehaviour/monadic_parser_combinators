@@ -48,6 +48,14 @@ object Parsers {
       char(str.head) >>= (_ => string(str.tail)) >>= (_ => result(str))
     }
 
+  def map2[A, B, C](parserA: Parser[A], parserB: => Parser[B])(
+      f: (A, B) => C
+  ): Parser[C] =
+    parserA >>= (a => parserB >>= (b => result(f(a, b))))
+
+  def many[A](p: Parser[A]): Parser[List[A]] =
+    map2(p, many(p))(_ :: _) ++ result(List())
+
   implicit class ParserMonadOps[A](parser: Parser[A]) {
     def >>=[B](f: A => Parser[B]): Parser[B] =
       input =>
