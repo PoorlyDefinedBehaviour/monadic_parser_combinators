@@ -136,4 +136,10 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
     ident("") should be(List(("", "")))
     ident("x") should be(List(("x", ""), ("", "x")))
   }
+
+  "int" should "parse integers" in {
+    int("") should be(List())
+    int("1") should be(List((1, "")))
+    int("123") should be(List((123, ""), (12, "3"), (1, "23")))
+  }
 }

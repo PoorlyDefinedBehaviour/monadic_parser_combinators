@@ -1,4 +1,12 @@
+object Operators {
+  implicit class PipeOperator[A](a: A) {
+    def |>[B](f: A => B): B = f(a)
+  }
+}
+
 object Parsers {
+  import Operators._
+
   type Parser[A] = String => List[(A, String)]
 
   def zero[A]: Parser[A] = input => List()
@@ -65,6 +73,18 @@ object Parsers {
 
   def ident: Parser[String] =
     many(letter).map(_.mkString)
+
+  def int: Parser[Int] =
+    input => {
+      val (sign, restOfInput) =
+        char('-')(input).headOption.getOrElse(("", input))
+
+      restOfInput |>
+        many1(digit)
+          .map(_.mkString)
+          .map(digit => s"$sign$digit")
+          .map(_.toInt)
+    }
 
   implicit class ParserMonoidOps[A](parser: Parser[A]) {
     def ++(parserTwo: Parser[A]): Parser[A] =
