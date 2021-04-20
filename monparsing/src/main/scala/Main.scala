@@ -56,6 +56,26 @@ object Parsers {
   def many[A](p: Parser[A]): Parser[List[A]] =
     map2(p, many(p))(_ :: _) ++ result(List())
 
+  def many1[A](parser: Parser[A]): Parser[List[A]] =
+    input => {
+      val result = many(parser)(input)
+
+      result.dropRight(1)
+    }
+
+  def ident: Parser[String] =
+    many(letter).map(_.mkString)
+
+  implicit class ParserMonoidOps[A](parser: Parser[A]) {
+    def ++(parserTwo: Parser[A]): Parser[A] =
+      input => List.concat(parser(input), parserTwo(input))
+  }
+
+  implicit class ParserFunctorOps[A](parser: Parser[A]) {
+    def map[B](f: A => B): Parser[B] =
+      parser >>= (a => result(f(a)))
+  }
+
   implicit class ParserMonadOps[A](parser: Parser[A]) {
     def >>=[B](f: A => Parser[B]): Parser[B] =
       input =>
@@ -63,11 +83,6 @@ object Parsers {
           val (parsed, restOfInput) = parserAResult
           f(parsed)(restOfInput)
         })
-  }
-
-  implicit class ParserMonoidOps[A](parser: Parser[A]) {
-    def ++(parserTwo: Parser[A]): Parser[A] =
-      input => List.concat(parser(input), parserTwo(input))
   }
 }
 

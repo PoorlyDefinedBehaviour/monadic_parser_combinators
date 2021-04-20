@@ -121,4 +121,19 @@ class MainSpec extends AnyFlatSpec with should.Matchers {
       )
     )
   }
+
+  "many1" should "succeed when the parser succeeds" in {
+    many1(char('a'))("aaab") should be(
+      List(
+        (List('a', 'a', 'a'), "b"),
+        (List('a', 'a'), "ab"),
+        (List('a'), "aab")
+      )
+    )
+  }
+
+  "ident" should "parse identifiers" in {
+    ident("") should be(List(("", "")))
+    ident("x") should be(List(("x", ""), ("", "x")))
+  }
 }
